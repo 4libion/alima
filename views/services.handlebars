@@ -1,0 +1,45 @@
+{{#if alert}}
+    <div class="alert alert-danger d-flex align-items-center text-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+        <div>
+            {{ alert }}
+        </div>
+    </div>
+{{/if}}
+
+<style>
+    .card {
+        background-color: #ffffff;
+        -webkit-transition: background-color 135ms linear;
+        -moz-transition: background-color 135ms linear;
+        -o-transition: background-color 135ms linear;
+        -ms-transition: background-color 135ms linear;
+        transition: background-color 135ms linear;
+    }
+    .card:hover {
+        background-color: #c0bfbf;
+    }
+    .linker {
+        text-decoration: none;
+        color: #000000;
+    }
+    .linker:hover {
+        text-decoration: none;
+        color: #000000;
+    }
+</style>
+    <div class="container-fluid">
+        <div class="row">
+            {{#each results}}
+                <div class="card shadow-sm" style="width: 18rem;">
+                    <a class="linker" href="/service/{{this.id}}">
+                        <img src="/images/fin.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <p class="card-text">{{ this.name }}</p>
+                        </div>
+                    </a>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+

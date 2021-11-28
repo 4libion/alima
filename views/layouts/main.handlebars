@@ -31,7 +31,7 @@
     <body>
         <nav class="navbar navbar-expand-lg" id="navbar">
             <a class="navbar-brand mx-auto" id="brand" href="/">
-                <img src="images/brand.png" alt="" width="200px" height="100px">
+                <img src="/images/brand.png" alt="" width="200px" height="100px">
             </a>
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,8 +47,16 @@
                         {{#if user}}
                             <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
                         {{/if}}
-                        <a class="nav-link active" aria-current="page" href="#">Services</a>
-                        {{#if user}}
+                        {{#if status}}
+                            <a class="nav-link active" aria-current="page" href="/orders">Orders</a>
+                        {{/if}}
+                        {{#if potential_client}}
+                            <a class="nav-link active" aria-current="page" href="/services">Services</a>
+                        {{/if}}
+                        {{#if status}}
+                            <a class="nav-link active" aria-current="page" href="/services">Services</a>
+                        {{/if}}
+                        {{#if status}}
                             <a class="nav-link active" aria-current="page" href="/login">Logout</a>
                         {{/if}}
                     </ul>

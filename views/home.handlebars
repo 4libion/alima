@@ -7,7 +7,7 @@
 
 
 <div class="row">
-  <div class="col-6"><h1>Users</h1></div>
+  <div class="col-6"><h1>Potential Clients</h1></div>
   <div class="col-6 d-flex justify-content-end">
     <a href="/sorted" type="button" class="btn btn-primary align-self-center mx-3">Sort alphabetically</a>
     <a href="/adduser" type="button" class="btn btn-primary align-self-center">+ add user</a>
@@ -16,13 +16,15 @@
 
 <table class="table table-bordered">
   <thead class="thead-dark">
-    <tr>
+    <tr class="text-start">
       <th scope="col">#</th>
       <th scope="col">First Name</th>
       <th scope="col">Last Name</th>
       <th scope="col">Email</th>
       <th scope="col">Phone</th>
-      <th scope="col" class="text-end">Action</th>
+      <th scope="col">Manager</th>
+      <th scope="col">Occupation</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -33,7 +35,9 @@
       <td>{{ this.last_name }}</td>
       <td>{{ this.email }}</td>
       <td>{{ this.phone }}</td>
-      <td class="text-end">
+      <td>{{ this.manager }}</td>
+      <td>{{ this.occupation }}</td>
+      <td class="text-center">
         <a href="/viewuser/{{ this.id }}" type="button" class="btn btn-secondary"><i class="bi bi-eye"></i>View</a>
         <a href="/edituser/{{ this.id }}" type="button" class="btn btn-secondary"><i class="bi bi-pencil"></i>Edit</a>
         <a href="/delete/{{ this.id }}" type="button" class="btn btn-danger"><i class="bi bi-person-x"></i>Delete</a>

@@ -22,7 +22,7 @@ app.use(express.static('public'));
 // Templating engine
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
-app.set('view options', {layout: 'login'})
+app.set('view options', {layout: 'login'});
 
 
 // Database connection pool

@@ -1,0 +1,16 @@
+<div class="container-fluid">
+        <div class="row">
+            {{#each results}}
+                <div class="card">
+                    <div class="card-header">
+                        Service
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ this.name }}</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="/dashboard/?service_of_interest=We mentioned that you like our service. Our managers will contact you!&&id={{this.name}}" class="btn btn-primary">I like it</a>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>

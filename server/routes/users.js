@@ -32,5 +32,15 @@ router.get('/delete/:id', users_controller.delete_user);
 // View User
 router.get('/viewuser/:id', users_controller.view_user);
 
+// Services
+router.post('/services', users_controller.services);
+router.get('/services', users_controller.services);
+
+// Service
+router.get('/service/:id', users_controller.service);
+
+// Orders
+router.get('/orders', users_controller.orders);
+
 
 module.exports = router; 

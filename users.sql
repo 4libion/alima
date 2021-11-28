@@ -1,5 +1,6 @@
 INSERT INTO `users`
 (`first_name`, `last_name`, `email`, `phone`, `comments`, `status`) VALUES
+('Alima', 'Tuyakayeva', 'alima@tuyakayeva.com', '123456789, 'admin'),
 ('Amanda', 'Nunes', 'amanda@nunes.com', '123456789, 'active'),
 ('Alexander', 'Volkanovski', 'alexander@volkanovski.com', '123456789', 'active'),
 ('Khabib', 'Nurmogamedov', 'khabib@nurmogamedov.com', '123456789', 'active'),

@@ -1,0 +1,20 @@
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr class="text-start">
+        <th scope="col">#</th>
+        <th scope="col">Customer id</th>
+        <th scope="col">Product id</th>
+        <th scope="col">Date ordered</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each results}}
+            <tr>
+                <th scope="row">{{ this.id }}</th>
+                <td>{{ this.customer_id }}</td>
+                <td>{{ this.product_id }}</td>
+                <td>{{ this.date_ordered }}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
