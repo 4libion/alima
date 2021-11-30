@@ -96,7 +96,6 @@ exports.dashboard = (req, res) => {
 exports.view = (req, res) => {
     if (req.session.user != null) {
         if (!((req.session.status == 'admin') || (req.session.status == 'manager'))) {
-            console.log(req.session.status);
             var url = '';
             if (req.session.user != null) {
                 url = 'dashboard';
@@ -109,16 +108,17 @@ exports.view = (req, res) => {
             database.query('SELECT * FROM potential_clients;', (err, results) => {
                 if (err) throw err;
                 users = [];
-                for (let i = 0; i < results.length; i++) {
-                    
-                    if (results[i].manager != null) {
-                        database.query(`SELECT first_name FROM managers WHERE first_name = '${results[i].manager}'`, (error, result) => {
-                            if (error) throw error;
-                            results[i].manager = result[0].first_name;
-                        });   
+                if (results.length != 0) {
+                    for (let i = 0; i < results.length; i++) {
+                        if (results[i].manager != null) {
+                            database.query(`SELECT first_name FROM managers WHERE first_name = '${results[i].manager}'`, (error, result) => {
+                                if (error) throw error;
+                                results[i].manager = result[0].first_name;
+                            });
+                        }
+                        var object = results[i];
+                        users.push(object['first_name']);
                     }
-                    var object = results[i];
-                    users.push(object['first_name']);
                 }
                 req.session.page = 'home';
                 // var removed_user = req.query.removed;
@@ -236,15 +236,28 @@ exports.form = (req, res) => {
 
 // Add User
 exports.add_user = (req, res) => {
-    const {first_name, last_name, email, phone, product, add_info, source_info, occupation, interaction_level, comments, status, manager} = req.body;
+    var {first_name, last_name, email, phone, product, add_info, source_info, occupation, interaction_level, comments, status, manager} = req.body;
         // console.log(search);
-        database.query('INSERT INTO potential_clients SET first_name = ?, last_name = ?, email = ?, phone = ?, product = ?, add_info = ?, source_info = ?, occupation = ?, interaction_level = ?, comments = ?, status = ?, manager = ?',
-            [first_name, last_name, email, phone, product, add_info, source_info, occupation, interaction_level, comments, status, manager], (err, results) => {
-            if (err) throw err;
-            else {
-                res.render('add_user', {alert: `${first_name} has been added successfully.`, status: req.session.status, user: req.session.user});
-            }
-        });
+        console.log('Here it is: ' + manager);
+        if (manager == '') {
+            manager = 'NULL';
+            database.query(`INSERT INTO potential_clients SET first_name = '${first_name}', last_name = '${last_name}', email = '${email}', phone = '${phone}', product = '${product}', add_info = '${add_info}', source_info = '${source_info}', occupation = '${occupation}', interaction_level = '${interaction_level}', comments = '${comments}', status = '${status}', manager = ${manager}`,
+            (err, results) => {
+                if (err) throw err;
+                else {
+                    res.render('add_user', {alert: `${first_name} has been added successfully.`, status: req.session.status, user: req.session.user});
+                }
+            });
+        } else {
+            database.query(`INSERT INTO potential_clients SET first_name = '${first_name}', last_name = '${last_name}', email = '${email}', phone = '${phone}', product = '${product}', add_info = '${add_info}', source_info = '${source_info}', occupation = '${occupation}', interaction_level = '${interaction_level}', comments = '${comments}', status = '${status}', manager = '${manager}'`,
+            (err, results) => {
+                if (err) throw err;
+                else {
+                    res.render('add_user', {alert: `${first_name} has been added successfully.`, status: req.session.status, user: req.session.user});
+                }
+            });
+        }
+        
 }
 
 
@@ -263,58 +276,87 @@ exports.edit_user = (req, res) => {
 
 // Update User
 exports.update_user = (req, res) => {
-    const {first_name, last_name, email, phone, comments, product, source_info, manager, status, occupation, add_info, interaction_level} = req.body;
-    var manager_id;
+    var {first_name, last_name, email, phone, comments, product, source_info, manager, status, occupation, add_info, interaction_level} = req.body;
     if (status == 'active') {
-        console.log('ACTIVE!');
-        database.query(`INSERT INTO customers (first_name, last_name, email, phone, occupation, product, add_info, source_info) VALUES('${first_name}', '${last_name}', '${email}', '${phone}', '${occupation}', '${product}', '${add_info}', '${source_info}')`, (err, result) => {
-            if (err) throw err;
-            else {
-                database.query(`DELETE FROM potential_clients WHERE first_name = '${first_name}'`, (err, r) => {
-                    if (err) throw err;
-                    else {
-                        res.redirect('/');
-                    }
-                });
-                let name;
-                database.query(`SELECT id FROM customers WHERE first_name = '${first_name}'`, (err, ans) => {
-                    name = ans[0].id;
-                    let product_id;
-                    database.query(`SELECT id FROM products WHERE name = '${product}'`, (err, ans) => {
-                        product_id = ans[0].id;
-                        var today = new Date();
-                        database.query(`INSERT INTO orders (customer_id, product_id, date_ordered) VALUES(${name}, ${product_id}, '${today.getFullYear()}/${today.getMonth()}/${today.getDate()}')`, (err, asnw) => {
-                            if (err) throw err;
+        if (manager == '') {
+            manager = 'NULL';
+            database.query(`INSERT INTO customers (first_name, last_name, email, phone, occupation, product, add_info, source_info) VALUES('${first_name}', '${last_name}', '${email}', '${phone}', '${occupation}', '${product}', '${add_info}', '${source_info}')`, (err, result) => {
+                if (err) throw err;
+                else {
+                    database.query(`DELETE FROM potential_clients WHERE first_name = '${first_name}'`, (err, r) => {
+                        if (err) throw err;
+                        else {
+                            res.redirect('/');
+                        }
+                    });
+                    let name;
+                    database.query(`SELECT id FROM customers WHERE first_name = '${first_name}'`, (err, ans) => {
+                        name = ans[0].id;
+                        let product_id;
+                        database.query(`SELECT id FROM products WHERE name = '${product}'`, (err, ans) => {
+                            product_id = ans[0].id;
+                            var today = new Date();
+                            database.query(`INSERT INTO orders (customer_id, product_id, date_ordered) VALUES(${name}, ${product_id}, '${today.getFullYear()}/${today.getMonth()}/${today.getDate()}')`, (err, asnw) => {
+                                if (err) throw err;
+                            });
                         });
                     });
-                });
-            }
-        });
-    } else {
-        database.query(`SELECT id FROM managers WHERE first_name = '${manager}'`, (err, resulting) => {
-            console.log(resulting);
-            if (resulting.length != 0) {
-                manager_id = resulting[0].id;
-                database.query(`UPDATE potential_clients SET first_name = '${first_name}', last_name = '${last_name}', email = '${email}', phone = '${phone}', product = '${product}', source_info = '${source_info}', manager = ${manager_id}, status = '${status}', occupation = '${occupation}', add_info = '${add_info}', interaction_level = '${interaction_level}', comments = '${comments}' WHERE id = ${req.params.id}`, (err, results) => {
-                    if (err) throw err;
-                    else {
-                        database.query('SELECT * FROM potential_clients WHERE id = ?', [req.params.id], (err, results) => {
-                            if (err) throw err;
-                            else {
-                                res.render('edit_user', {results, alert: `${first_name} has been updated.`, admin: req.session.status == 'admin', status: req.session.status, user: req.session.user});
-                            }
+                }
+            });
+        } else {
+            database.query(`INSERT INTO customers (first_name, last_name, email, phone, occupation, product, add_info, source_info) VALUES('${first_name}', '${last_name}', '${email}', '${phone}', '${occupation}', '${product}', '${add_info}', '${source_info}')`, (err, result) => {
+                if (err) throw err;
+                else {
+                    database.query(`DELETE FROM potential_clients WHERE first_name = '${first_name}'`, (err, r) => {
+                        if (err) throw err;
+                        else {
+                            res.redirect('/');
+                        }
+                    });
+                    let name;
+                    database.query(`SELECT id FROM customers WHERE first_name = '${first_name}'`, (err, ans) => {
+                        name = ans[0].id;
+                        let product_id;
+                        database.query(`SELECT id FROM products WHERE name = '${product}'`, (err, ans) => {
+                            product_id = ans[0].id;
+                            var today = new Date();
+                            database.query(`INSERT INTO orders (customer_id, product_id, date_ordered) VALUES(${name}, ${product_id}, '${today.getFullYear()}/${today.getMonth()}/${today.getDate()}')`, (err, asnw) => {
+                                if (err) throw err;
+                            });
                         });
-                    }
-                });
-            } else {
-                database.query('SELECT * FROM potential_clients WHERE id = ?', [req.params.id], (err, results) => {
-                    if (err) throw err;
-                    else {
-                        res.render('edit_user', {results, alert: `${first_name} has been updated.`, admin: req.session.status == 'admin', status: req.session.status, user: req.session.user});
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
+        
+    } else {
+        if (manager == '') {
+            manager = 'NULL';
+            database.query(`UPDATE potential_clients SET first_name = '${first_name}', last_name = '${last_name}', email = '${email}', phone = '${phone}', product = '${product}', source_info = '${source_info}', manager = ${manager}, status = '${status}', occupation = '${occupation}', add_info = '${add_info}', interaction_level = '${interaction_level}', comments = '${comments}' WHERE id = ${req.params.id}`, (err, results) => {
+                if (err) throw err;
+                else {
+                    database.query('SELECT * FROM potential_clients WHERE id = ?', [req.params.id], (err, results) => {
+                        if (err) throw err;
+                        else {
+                            res.render('edit_user', {results, alert: `${first_name} has been updated.`, admin: req.session.status == 'admin', status: req.session.status, user: req.session.user});
+                        }
+                    });
+                }
+            });
+        } else {
+            database.query(`UPDATE potential_clients SET first_name = '${first_name}', last_name = '${last_name}', email = '${email}', phone = '${phone}', product = '${product}', source_info = '${source_info}', manager = '${manager}', status = '${status}', occupation = '${occupation}', add_info = '${add_info}', interaction_level = '${interaction_level}', comments = '${comments}' WHERE id = ${req.params.id}`, (err, results) => {
+                if (err) throw err;
+                else {
+                    database.query('SELECT * FROM potential_clients WHERE id = ?', [req.params.id], (err, results) => {
+                        if (err) throw err;
+                        else {
+                            res.render('edit_user', {results, alert: `${first_name} has been updated.`, admin: req.session.status == 'admin', status: req.session.status, user: req.session.user});
+                        }
+                    });
+                }
+            });
+        }
+        
     }
 }
 
