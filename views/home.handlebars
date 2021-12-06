@@ -24,6 +24,7 @@
       <th scope="col">Phone</th>
       <th scope="col">Manager</th>
       <th scope="col">Occupation</th>
+      <th scope="col">Int. level</th>
       <th scope="col">Action</th>
     </tr>
   </thead>
@@ -37,11 +38,47 @@
       <td>{{ this.phone }}</td>
       <td>{{ this.manager }}</td>
       <td>{{ this.occupation }}</td>
+      <td>{{ this.interaction_level }}</td>
       <td class="text-center">
         <a href="/viewuser/{{ this.id }}" type="button" class="btn btn-secondary"><i class="bi bi-eye"></i>View</a>
         <a href="/edituser/{{ this.id }}" type="button" class="btn btn-secondary"><i class="bi bi-pencil"></i>Edit</a>
         <a href="/delete/{{ this.id }}" type="button" class="btn btn-danger"><i class="bi bi-person-x"></i>Delete</a>
       </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-6"><h1>Clients</h1></div>
+</div>
+
+<table class="table table-bordered">
+  <thead class="thead-dark">
+    <tr class="text-start">
+      <th scope="col">#</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Occupation</th>
+      <th scope="col">Product</th>
+      <th scope="col">Add. info</th>
+      <th scope="col">Source info</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each answer}}
+    <tr>
+      <th scope="row">{{ this.id }}</th>
+      <td>{{ this.first_name }}</td>
+      <td>{{ this.last_name }}</td>
+      <td>{{ this.email }}</td>
+      <td>{{ this.phone }}</td>
+      <td>{{ this.occupation }}</td>
+      <td>{{ this.product }}</td>
+      <td>{{ this.add_info }}</td>
+      <td>{{ this.source_info }}</td>
     </tr>
     {{/each}}
   </tbody>

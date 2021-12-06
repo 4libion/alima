@@ -123,7 +123,10 @@ exports.view = (req, res) => {
                 req.session.page = 'home';
                 // var removed_user = req.query.removed;
                 // results.sort((a,b) => (a.first_name > b.first_name) ? 1 : ((b.first_name > a.first_name) ? -1 : 0));
-                res.render('home', {results, page: req.session.page == 'home', status: req.session.status == 'admin', user: req.session.user});
+                database.query(`SELECT * FROM customers`, (err, answer) => {
+                    if (err) throw err;
+                    res.render('home', {answer, results, page: req.session.page == 'home', status: req.session.status == 'admin', user: req.session.user});
+                });
             });
         } else {
             let manager;
@@ -195,8 +198,8 @@ exports.search = (req, res) => {
         // console.log(name);
         // console.log(surname);
         
-        database.query('SELECT * FROM potential_clients WHERE last_name LIKE ? OR first_name LIKE ?',
-        ['%' + target + '%', '%' + target + '%'], (err, results) => {
+        database.query('SELECT * FROM potential_clients WHERE last_name LIKE ? OR first_name LIKE ? OR interaction_level LIKE ?',
+        ['%' + target + '%', '%' + target + '%', '%' + target + '%'], (err, results) => {
             res.render('home', { results, status: req.session.status, user: req.session.user, page: true });
         });
 
