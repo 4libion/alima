@@ -45,16 +45,13 @@
                             </li>
                         {{/if}}
                         <a class="nav-link active" aria-current="page" href="/main">Main</a>
-                        {{#if user}}
+                        {{!-- {{#if user}} --}}
                             <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
-                        {{/if}}
+                        {{!-- {{/if}} --}}
                         {{#if status}}
                             <a class="nav-link active" aria-current="page" href="/orders">Orders</a>
                         {{/if}}
                             <a class="nav-link active" aria-current="page" href="/services">Services</a>
-                        {{#if status}}
-                            <a class="nav-link active" aria-current="page" href="/services">Services</a>
-                        {{/if}}
                         {{#if status}}
                             <a class="nav-link active" aria-current="page" href="/login">Logout</a>
                         {{/if}}
