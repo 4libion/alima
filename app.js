@@ -26,7 +26,7 @@ app.set('view options', {layout: 'login'});
 
 
 // Database connection pool
-const pool = mysql.createPool({
+const pool = mysql.createPool({ // Dictionary data sctructure
     host            : process.env.DB_HOST,
     user            : process.env.DB_USER,
     password        : process.env.DB_PASSWORD,
@@ -34,11 +34,11 @@ const pool = mysql.createPool({
     connectionLimit : 100
 });
 
-const sessionStore = new MySQLStore({}, pool);
+const sessionStore = new MySQLStore({}, pool); // Class data structure
 global.database = pool;
 
 
-app.use(session({
+app.use(session({ // Dictionary data sctructure
     secret: 'secret',
     resave: false,
     saveUninitialized: false,

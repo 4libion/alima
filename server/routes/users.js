@@ -42,5 +42,8 @@ router.get('/service/:id', users_controller.service);
 // Orders
 router.get('/orders', users_controller.orders);
 
+// Login Page
+router.get('/main', users_controller.main);
+
 
 module.exports = router; 

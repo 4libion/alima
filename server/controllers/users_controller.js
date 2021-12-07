@@ -195,8 +195,6 @@ exports.search = (req, res) => {
         surname = recursiveFunction(users[1], target, 0, users[1].length - 1);
         if (name == false) name = surname;
         if (surname == false) surname = name;
-        // console.log(name);
-        // console.log(surname);
         
         database.query('SELECT * FROM potential_clients WHERE last_name LIKE ? OR first_name LIKE ? OR interaction_level LIKE ?OR manager LIKE ?',
         ['%' + target + '%', '%' + target + '%', '%' + target + '%', '%' + target + '%'], (err, results) => {
@@ -434,4 +432,9 @@ exports.orders = (req, res) => {
         console.log(results);
         res.render('orders', {results, status: req.session.status, user: req.session.user});
     });
+}
+
+
+exports.main = (req, res) => {
+    res.render('main', {status: req.session.status, user: req.session.user});
 }
